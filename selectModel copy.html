@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=1080, height=1920, initial-scale=1, maximum-scale=1, user-scalable=0"
+    />
+    <title>选择模型</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <link rel="stylesheet" href="css_style/styles.css" />
+    <style>
+      .tit {
+        color: white;
+        font-size: 8vw;
+        line-height: 0vw;
+        margin-left: 7vw;
+        font-family: "CustomFont";
+        margin-bottom: 1vw;
+        margin-top: 9vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-container">
+      <div class="background-image">
+        <!-- 背景图片 -->
+        <img
+          src="Page 2/img/background.png"
+          alt=""
+          style="
+            position: absolute;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+          "
+        />
+        <img
+          src="img/step_one.png"
+          alt=""
+          style="
+            position: absolute;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+          "
+        />
+
+        <div class="menu-container">
+          <div class="logo">
+            <img
+              src="img/logo.png"
+              alt="logo"
+              style="height: 100%; width: 100%"
+            />
+          </div>
+          <div class="box">
+            <a href="index.html">
+              <img src="img/first-page.png" alt="first-page" />
+            </a>
+            <a href="imgrecord.html" style="margin-left: 15%">
+              <img src="img/history.png" alt="history" />
+            </a>
+          </div>
+        </div>
+        <!-- 选择部分 -->
+        <div class="select-container">
+          <p class="tit">写实摄影</p>
+
+          <!-- <div class="top-container"> -->
+            <div class="grid-item">
+              <div class="sub-item">
+                <a href="upload.html" class="myLink" id="myLink1">
+                  <div class="content-tiltle" id="InsSnow">雪 景</div>
+                  <img class="good_mark" src="img/推荐.png" alt="推荐" />
+                  <!-- <img src="img/+.png" alt=""> -->
+                  <!-- <img src="img/+.png" alt=""> -->
+                </a>
+                <img src="img/雪景.png" alt="" />
+                <!-- 配合第一个脚本使用--暂时不用 -->
+                <!-- <div class="img-display" >
+                    <img src="img/home.jpg" alt="">
+                  </div> -->
+              </div>
+
+              <div class="sub-item">
+                <a href="upload.html" class="myLink" id="myLink2">
+                  <div class="content-tiltle" id="InsDusk">夕阳余晖</div>
+                  <img class="good_mark" src="img/推荐.png" alt="推荐" />
+                </a>
+                <img src="img/夕阳余晖.png" alt="" />
+              </div>
+            </div>
+            <div class="grid-item">
+              <div class="sub-item">
+                <a href="upload.html" class="myLink" id="myLink3">
+                  <div class="content-tiltle" id="InsFilm">老电影</div>
+                  <img class="good_mark" src="img/推荐.png" alt="推荐" />
+                </a>
+                <img src="img/老电影.png" alt="" />
+              </div>
+              <div class="sub-item">
+                <a href="upload.html" class="myLink" id="myLink4">
+                  <div class="content-tiltle" id="I2IGuoFeng">水墨画</div>
+                  <img class="good_mark" src="img/推荐.png" alt="推荐" />
+                </a>
+                <img src="img/水墨画.png" alt="" />
+              </div>
+            </div>
+            <div class="divider"></div>
+          </div>
+          <p class="tit">创意绘画</p>
+
+          <!-- <div class="bottom-container"> -->
+            <div class="grid-item">
+              <div class="sub-item">
+                <a href="upload.html" class="myLink" id="myLink5">
+                  <div class="content-tiltle" id="I2IGhostXLAnimeCycleScifi">
+                    轻赛博科幻主题
+                  </div>
+                </a>
+              </div>
+              <div class="sub-item">
+                <a href="upload.html" class="myLink" id="myLink6">
+                  <div class="content-tiltle" id="I2IGhostXLAnimeChinese">
+                    中国龙主题国风
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="grid-item">
+              <div class="sub-item">
+                <a href="upload.html" class="myLink" id="myLink7">
+                  <div class="content-tiltle" id="InsShuiMo">水墨幻境</div>
+                </a>
+              </div>
+              <div class="sub-item">
+                <a href="upload.html" class="myLink" id="myLink8">
+                  <div class="content-tiltle" id="InsWaterColor">水彩风</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <!-- 鼠标悬浮显示隐藏图片 --- 暂时不用这个     -->
+  <!-- <script>
+    var subItems = document.querySelectorAll('.sub-item');
+    subItems.forEach(function(item) {
+      var imgDisplay = item.querySelector('.img-display');
+      item.addEventListener('mouseover', function() {
+        imgDisplay.style.display = 'block';
+      });
+
+      item.addEventListener('mouseleave', function() {
+        imgDisplay.style.display = 'none';
+      });
+    });
+  </script> -->
+
+  <!-- 请求处理部分 -->
+  <script>
+    $(document).ready(function () {
+      // 为类名为 myLink 的链接添加点击事件处理程序
+      $(".myLink").click(function (e) {
+        // 阻止默认的链接跳转行为
+        e.preventDefault();
+        // 获取对应链接下的 .content-tiltle 元素的 id 内容
+        var contentId = $(this).find(".content-tiltle").attr("id");
+        // 执行相应的操作，例如将 id 传递到下一个页面
+        console.log("链接的id内容是：", contentId);
+        localStorage.setItem("contentId", contentId);
+        // 跳转到下一个页面并将 id 作为 URL 参数传递
+        window.location.href = $(this).attr("href") + "?id=" + contentId;
+      });
+    });
+  </script>
+</html>

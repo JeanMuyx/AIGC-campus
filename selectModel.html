@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=1080, height=1920, initial-scale=1, maximum-scale=1, user-scalable=0"
+    />
+    <title>选择模型</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <link rel="stylesheet" href="css_style/styles.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .tit {
+        color: white;
+        font-size: 10vw;
+        margin-left: -4vw;
+        font-family: "CustomFont";
+        text-align: center;
+        margin-top: 7vw;
+      }
+      .t2 {
+        font-size: 4vw;
+      }
+      .topline1,
+      .topline2,
+      .bottomline1,
+      .bottomline2 {
+        display: flex;
+        justify-content: space-around;
+        height: 37vw;
+      }
+      .bottomline1,
+      .bottomline2 {
+        height: 27vw;
+        margin: 1vw;
+      }
+      .bottomline1 .sub-item {
+        margin-top: 12vw;
+        height: 19vw;
+        transform: translateX(-10vw);
+      }
+      .bottomline1 .myLink,
+      .bottomline2 .myLink {
+        height: 10vw;
+        /* height: 96%; */
+      }
+      .bottomline1 {
+        margin-top: 6vw;
+        border-top: 3px solid white;
+        margin-left: -3vw;
+        width: 96vw;
+      }
+      .sub-item img {
+        display: block;
+      }
+      .sub-item a {
+        margin-top: 2vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-container">
+      <div class="background-image">
+        <!-- 背景图片 -->
+        <img
+          src="Page 2/img/background.png"
+          alt=""
+          style="
+            position: absolute;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+          "
+        />
+        <img
+          src="img/step_one.png"
+          alt=""
+          style="
+            position: absolute;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+          "
+        />
+
+        <div class="menu-container">
+          <div class="logo">
+            <img
+              src="img/logo.png"
+              alt="logo"
+              style="height: 100%; width: 100%"
+            />
+          </div>
+          <div class="box">
+            <a href="index.html">
+              <img src="img/first-page.png" alt="first-page" />
+            </a>
+            <a href="imgrecord.html" style="margin-left: 15%">
+              <img src="img/history.png" alt="history" />
+            </a>
+          </div>
+        </div>
+        <!-- 选择部分 -->
+        <div class="select-container">
+          <div class="topline1">
+            <div class="tit">
+              <p class="t1">AI摄影</p>
+              <p class="t2">可根据您的照片生成 <br />真实风格的AI图片</p>
+            </div>
+            <div class="sub-item">
+              <img
+                src="img/浙传工作流示例图.png"
+                alt=""
+                style="width: 27vw; position: relative; left: -16vw"
+              />
+
+              <a
+                href="upload.html"
+                class="myLink"
+                id="myLink1"
+                style="
+                  position: relative;
+                  left: 16vw;
+                  bottom: 30vw;
+                  border-color: #e45151;
+                  height: 22vw;
+                  border-width: thick;
+                "
+              >
+                <div
+                  class="content-tiltle"
+                  id="PortraitStylizationWithBackground"
+                  style="
+                    font-size: 6vw;
+                    color: #fd1e4a;
+                    text-align: end;
+                    font-weight: 800;
+                  "
+                >
+                  <img
+                    src="img/cuzlogo.png"
+                    style="width: 7vw; position: relative; top: 4vw"
+                    alt=""
+                  />
+                  浙传 <br />校园打卡
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="topline2">
+            <div class="sub-item">
+              <img src="img/雪景.png" alt="" />
+
+              <a href="upload.html" class="myLink" id="myLink1">
+                <div class="content-tiltle" id="InsSnow">雪 景</div>
+              </a>
+            </div>
+            <div class="sub-item">
+              <img src="img/夕阳余晖.png" alt="" />
+
+              <a href="upload.html" class="myLink" id="myLink2">
+                <div class="content-tiltle" id="InsDusk">夕阳余晖</div>
+              </a>
+            </div>
+            <div class="sub-item">
+              <img src="img/老电影.png" alt="" />
+
+              <a href="upload.html" class="myLink" id="myLink3">
+                <div class="content-tiltle" id="InsFilm">老电影</div>
+              </a>
+            </div>
+            <div class="sub-item">
+              <img src="img/水墨画.png" alt="" />
+
+              <a href="upload.html" class="myLink" id="myLink4">
+                <div class="content-tiltle" id="I2IGuoFeng">水墨画</div>
+              </a>
+            </div>
+          </div>
+          <div class="bottomline1">
+            <div class="tit">
+              <p class="t1">创意绘画</p>
+              <p class="t2">可根据拍摄照片生成 <br />风格化创作艺术</p>
+            </div>
+            <div class="sub-item">
+              <a href="upload.html" class="myLink" id="myLink5">
+                <div class="content-tiltle" id="I2IGhostXLAnimeCycleScifi">
+                  赛博科幻
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="bottomline2">
+            <div class="sub-item">
+              <a href="upload.html" class="myLink" id="myLink6">
+                <div class="content-tiltle" id="I2IGhostXLAnimeChinese">
+                  玄幻古风
+                </div>
+              </a>
+            </div>
+            <div class="sub-item">
+              <a href="upload.html" class="myLink" id="myLink7">
+                <div class="content-tiltle" id="InsShuiMo">水墨幻境</div>
+              </a>
+            </div>
+            <div class="sub-item">
+              <a href="upload.html" class="myLink" id="myLink8">
+                <div class="content-tiltle" id="InsWaterColor">水彩风</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- 请求处理部分 -->
+  <script>
+    $(document).ready(function () {
+      // 为类名为 myLink 的链接添加点击事件处理程序
+      $(".myLink").click(function (e) {
+        // 阻止默认的链接跳转行为
+        e.preventDefault();
+        // 获取对应链接下的 .content-tiltle 元素的 id 内容
+        var contentId = $(this).find(".content-tiltle").attr("id");
+        // 执行相应的操作，例如将 id 传递到下一个页面
+        console.log("链接的id内容是：", contentId);
+        localStorage.setItem("contentId", contentId);
+        // 跳转到下一个页面并将 id 作为 URL 参数传递
+        window.location.href = $(this).attr("href") + "?id=" + contentId;
+      });
+    });
+  </script>
+</html>

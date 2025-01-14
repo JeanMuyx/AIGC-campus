@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生成记录</title>
+    <script src="js/axios.min.js"></script>
+    <script src="js/qrcode.min.js"></script>
+
+    <style>
+      * {
+        font-size: 50px;
+      }
+      html,
+      body {
+        width: 100vw;
+        height: 178.8vw;
+        margin: 0;
+        padding: 0;
+        background-image: url(img/bg.jpg);
+        background-size: cover;
+        overflow: auto;
+      }
+
+      img {
+        display: block;
+      }
+      .nav {
+        padding-top: 6.5vw;
+        width: 100%;
+        height: 8vw;
+        background-color: rgb(0, 0, 0);
+        position: fixed;
+        z-index: 12;
+        top: 0;
+      }
+      .title {
+        width: 45.95vw;
+        z-index: 14;
+        margin-top: 10vw;
+      }
+      .logo {
+        width: 60vw;
+        margin-top: -1vw;
+      }
+      .nav img:nth-child(1) {
+        float: left;
+        z-index: 16;
+      }
+      .nav img:nth-child(2) {
+        float: right;
+        margin-right: 9vw;
+        margin-left: 1.7vw;
+        width: 6.5vw;
+        height: 6.5vw;
+      }
+      .nav img:nth-child(3) {
+        float: right;
+        width: 6.5vw;
+        height: 6.5vw;
+      }
+      .imgbox {
+        width: 92.8vw;
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 1.5vw;
+      }
+      .scimg {
+        width: 40.4vw;
+        height: 48.48vw;
+        background-color: rgb(255, 255, 255);
+        border-radius: 5vw;
+        margin-left: 5.6vw;
+        margin-bottom: 5.6vw;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .qrcode {
+        position: absolute;
+        top: 3%;
+        left: 3%;
+        display: none;
+        width: 80%;
+        height: auto;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="nav">
+        <img src="img/logo.png" alt="" class="logo" />
+        <img src="img/recordbtn.png" alt="" />
+
+        <img src="img/home.jpg" alt="" class="goToHome" />
+      </div>
+      <img src="img/maketitle.png" alt="" class="title" />
+      <div class="imgbox"></div>
+    </main>
+    <script>
+      let imgbox = document.querySelector(".imgbox");
+      // 获取生成图像合集
+      window.addEventListener("load", () => {
+        let scale = localStorage.getItem("scale");
+        const queryParams = {
+          client_id: "cuz",
+        };
+        // 发送基础的get请求 :
+        axios
+          .get("/history/get", {
+            params: queryParams,
+          })
+          .then((res) => {
+            console.log("allimg", res);
+            let imgUris = res.data.data;
+            console.log("imgs", imgUris);
+            // 如果想要获取响应数据信息 , 那么我们需要通过解构获取到res里面的data属性属性;
+            for (let i = 0; i < imgUris.length; i++) {
+              let imgdiv = document.createElement("div");
+              imgdiv.className = "scimg";
+              let img = document.createElement("img");
+              // 添加data-src属性
+              img.dataset.src = imgUris[i].oss_url;
+              if (img.offsetHeight > img.offsetWidth) {
+                img.style.width = "100%";
+              } else {
+                img.style.height = "100%";
+              }
+              // 创建二维码容器
+              let qrCodeDiv = document.createElement("div");
+              qrCodeDiv.className = "qrcode";
+              imgdiv.appendChild(qrCodeDiv);
+              // img.src=imgUris[i]
+              imgdiv.appendChild(img);
+              imgbox.appendChild(imgdiv);
+              // 添加悬浮事件
+              imgdiv.addEventListener("click", () => {
+                console.log("二维码");
+                let originalString = img.dataset.src; // URL for QR code
+                var lastSmallIndex = originalString.lastIndexOf("small");
+                if (lastSmallIndex !== -1) {
+                  // 将最后一个 "small" 之后的子字符串替换为 "imerc"
+                  var newString =
+                    originalString.substring(0, lastSmallIndex) + "imerc";
+                  console.log("newString,", newString);
+                } else {
+                  console.log("未找到要替换的字符串");
+                }
+                qrCodeDiv.innerHTML = ""; // 清空之前生成的二维码
+                new QRCode(qrCodeDiv, {
+                  text: 'https://imedia.cuz.edu.cn/downloadimg/index.html?imgUrl='+newString,
+                  width: imgdiv.offsetWidth * 0.5,
+                  height: imgdiv.offsetWidth * 0.5,
+                });
+                qrCodeDiv.style.display = "block"; // 显示二维码
+              });
+
+              imgdiv.addEventListener("mouseleave", () => {
+                qrCodeDiv.style.display = "none"; // 隐藏二维码
+              });
+            }
+            //懒加载问题
+            const io = new IntersectionObserver(function (items) {
+              console.log(io);
+              items.forEach((item) => {
+                if (item.isIntersecting) {
+                  item.target.src = item.target.getAttribute("data-src");
+                }
+              });
+            });
+            document.querySelectorAll(".imgbox img").forEach((item) => {
+              io.observe(item);
+            });
+          })
+          .catch((err) => {
+            console.log("网络错误(历史记录)");
+          });
+      });
+      let goToHome = document.querySelector(".goToHome");
+      goToHome.addEventListener("click", () => {
+        location.href = "index.html";
+        console.log("go");
+      });
+    </script>
+  </body>
+</html>

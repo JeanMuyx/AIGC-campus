@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生成界面</title>
+    <script src="js/qrcode.min.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script src="js/axios.min.js"></script>
+
+    <style>
+      html,
+      body {
+        width: 100%;
+        background-image: url("img/bg3.png");
+        background-size: cover;
+        overflow: hidden;
+      }
+
+      main {
+        height: 178.8vw;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .zhuye {
+        float: right;
+        margin-top: -174vw;
+        margin-right: 15vw;
+        width: 9.26vw;
+        height: 9.26vw;
+      }
+
+      .lishi {
+        float: right;
+        margin-top: -174vw;
+        margin-right: 5vw;
+        width: 9.26vw;
+        height: 9.26vw;
+      }
+
+      .photo {
+        float: right;
+        margin-top: -150vw;
+        margin-right: 8vw;
+        overflow: hidden;
+        width: 85vw;
+        height: 102vw;
+        background-position: center center;
+        background-size: contain;
+      }
+
+      .chongpai {
+        float: right;
+        margin-top: -40vw;
+        margin-right: 55vw;
+        width: 28vw;
+        height: 9vw;
+      }
+
+      .chongsheng {
+        float: right;
+        margin-top: -25vw;
+        margin-right: 55vw;
+        width: 28vw;
+        height: 9vw;
+      }
+
+      #qrcode-container {
+        position: relative;
+        overflow: hidden;
+        float: right;
+        margin-right: 20vw;
+        margin-top: -42vw;
+      }
+      .loadingbox {
+        margin: 0;
+        padding: 0;
+        background-image: url("img/loading.png");
+        background-size: cover;
+        background-position: center;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+      }
+
+      .loader {
+        border: 0.46vw solid #f3f3f3; /* Light grey */
+        border-top: 0.46vw solid #ffbc47; /* Blue */
+        border-radius: 50%;
+        width: 18.5vw;
+        height: 18.5vw;
+        animation: spin 2s linear infinite;
+        margin-top: -30.6vw;
+        z-index: 100;
+      }
+      .errmsg {
+        width: 60vw;
+        height: 20vw;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -30vw;
+        z-index: 2000;
+        background-color: white;
+        font-size: 7vw;
+        text-align: center;
+        align-items: center;
+        font-weight: 600;
+        color: red;
+        display: none;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      #qrcode-container,
+      #qrcode {
+        width: 27.8vw;
+        height: 27.8vw;
+      }
+      .save {
+        width: 35vw;
+        position: relative;
+        left: 48vw;
+        bottom: 10vw;
+      
+      }
+      @font-face {
+        font-family: CustomFont;
+        src: url("../font/ZaoZiGongFangZhangTieTi-2.ttf");
+      }
+    </style>
+  </head>
+  <body>
+    <main></main>
+    <div class="loadingbox">
+      <div class="loader" id="loader"></div>
+      <div
+        class="loadingtext"
+        style="
+          color: #f4d386;
+          position: absolute;
+          text-align: center;
+          font-size: 5vw;
+          line-height: 2vw;
+          top: 87vw;
+          font-family: CustomFont;
+          letter-spacing: 1vw;
+        "
+      >
+        <p>照片制作中</p>
+        <p>约40秒后呈现</p>
+      </div>
+    </div>
+    <div class="errmsg">!网络错误 <br />即将跳转到主页面</div>
+
+    <div class="zhuye">
+      <a href="index.html"><img src="img/indexbtn.png" width="100vw" /></a>
+    </div>
+    <div class="lishi">
+      <a href="imgrecord.html"><img src="img/recordbtn.png" width="100vw" /></a>
+    </div>
+    <div class="photo">
+    </div>
+    <div class="chongpai">
+      <img src="img/retakebtn.png" width="300vw" />
+    </div>
+    <div class="chongsheng">
+      <img src="img/remake.png" width="300vw" />
+    </div>
+
+    <div id="qrcode-container">
+      <div id="qrcode"></div>
+    </div>
+    <img src="img/save.png" alt="" class="save" />
+
+    <script>
+      let goback = document.querySelector(".chongpai");
+      let getImg = localStorage.getItem("myimg");
+      let scale = localStorage.getItem("scale");
+      goback.addEventListener("click", () => {
+        window.history.back();
+      });
+      function refresh() {
+        window.location.replace("drawImage.html");
+      }
+      let imgBox = document.querySelector(".photo");
+      // 获取要生成二维码的数据
+      var originalString = getImg;
+      var lastSmallIndex = originalString.lastIndexOf("small");
+      if (lastSmallIndex !== -1) {
+        // 将最后一个 "small" 之后的子字符串替换为 "imerc"
+        var newString = originalString.substring(0, lastSmallIndex) + "imerc";
+        console.log("newString,",newString);
+      } else {
+        console.log("未找到要替换的字符串");
+      }
+      imgBox.style.backgroundImage = `url(${newString})`;
+      imgBox.style.backgroundRepeat = "no-repeat";
+      imgBox.style.backgroundSize = "contain";
+
+      // 通过QR Code Generator库生成二维码
+      var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: 'https://imedia.cuz.edu.cn/downloadimg/index.html?imgUrl='+newString,
+        width: 300,
+        height: 300,
+      });
+    </script>
+    <script>
+      function getGreen() {
+        console.log("绘图状态");
+      }
+    </script>
+  </body>
+</html>

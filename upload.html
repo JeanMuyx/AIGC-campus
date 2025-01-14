@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>拍照上传界面</title>
+    <script src="js/axios.min.js"></script>
+
+    <style>
+      html,
+      body {
+        width: 100%;
+        background-image: url("img/bg2.png");
+        background-size: cover;
+        overflow: hidden;
+      }
+
+      main {
+        height: 178.8vw;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .zhuye {
+        float: right;
+        margin-top: -174vw;
+        margin-right: 15vw;
+        width: 9.26vw;
+        height: 9.26vw;
+      }
+
+      .lishi {
+        float: right;
+        margin-top: -174vw;
+        margin-right: 5vw;
+        width: 9.26vw;
+        height: 9.26vw;
+      }
+
+      .queren {
+        float: right;
+        margin-top: -23vw;
+        margin-right: 41vw;
+        width: 18.5vw;
+        height: 18.5vw;
+        display: none;
+        background-color: #f5d485;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+      }
+      .queren img {
+        width: 65%;
+        height: 65%;
+      }
+
+      .chongpai {
+        float: right;
+        margin-top: -20vw;
+        margin-right: 66vw;
+        width: 10.5vw;
+        display: none;
+      }
+
+      .paizhao {
+        float: right;
+        margin-top: -135vw;
+        margin-right: 10vw;
+      }
+
+      .getphoto {
+        float: right;
+        margin-top: -23vw;
+        margin-right: 40.75vw;
+        width: 18.5vw;
+        height: 18.5vw;
+      }
+
+      .jianxiao {
+        float: right;
+        margin-top: -30vw;
+        margin-right: 80vw;
+        width: 6.48vw;
+        height: 6.48vw;
+      }
+
+      .fangda {
+        float: right;
+        margin-top: -30vw;
+        margin-right: 15vw;
+        width: 6.48vw;
+        height: 6.48vw;
+      }
+
+      #video-container {
+        position: relative;
+        width: 74vw;
+        height: 101.9vw;
+        overflow: hidden;
+        border-radius: 5%;
+        float: right;
+        margin-right: 13vw;
+        margin-top: -135vw;
+      }
+
+      #video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      #canvas {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scaleX(-1) !important;
+      }
+
+      .mystate {
+        width: 5vw;
+        height: 5vw;
+        background-color: yellow;
+        border-radius: 50%;
+        position: absolute;
+        top: 20vw;
+        right: 5vw;
+        font-size: 4vw;
+      }
+
+      .loadingbox {
+        margin: 0;
+        padding: 0;
+        background-image: url("img/loading.png");
+        background-size: cover;
+        background-position: center;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+      }
+
+      .loader {
+        border: 0.46vw solid #f3f3f3;
+        border-top: 0.46vw solid #ffbc47;
+        border-radius: 50%;
+        width: 18.5vw;
+        height: 18.5vw;
+        animation: spin 2s linear infinite;
+        margin-top: -30.6vw;
+        z-index: 100;
+      }
+
+      .errmsg {
+        width: 60vw;
+        height: 20vw;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -30vw;
+        z-index: 2000;
+        background-color: white;
+        font-size: 7vw;
+        text-align: center;
+        align-items: center;
+        font-weight: 600;
+        color: red;
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @font-face {
+        font-family: CustomFont;
+        src: url("./font/ZaoZiGongFangZhangTieTi-2.ttf");
+      }
+      input[type="radio"] {
+        accent-color: #ffbc47;
+        transform: scale(4) translateY(-0.2vw);
+        margin: 0 2vw;
+        margin-bottom: 0vw;
+        font-family: CustomFont;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- <div
+      class="selectSex"
+      style="
+        position: absolute;
+        top: 12%;
+        left: 65%;
+        font-size: 5vw;
+        font-family: CustomFont;
+        color: white;
+        text-align: center;
+        line-height: 3vw;
+      "
+    >
+
+      <p style="letter-spacing: 0.5vw;">选择人物性别:</p>
+      <label for="male">男</label>
+
+      <input
+        type="radio"
+        name="sex"
+        value="male"
+        id="male"
+        checked
+        class="sex"
+      />
+      <label for="female">女</label>
+
+      <input type="radio" name="sex" value="female" id="female" class="sex" />
+    </div> -->
+    <div class="loadingbox">
+      <div class="loader" id="loader"></div>
+      <div
+        class="loadingtext"
+        style="
+          color: #f4d386;
+          position: absolute;
+          text-align: center;
+          font-size: 5vw;
+          line-height: 2vw;
+          top: 87vw;
+          font-family: CustomFont;
+          letter-spacing: 1vw;
+        "
+      >
+        <p>照片制作中</p>
+        <p>约60秒后呈现</p>
+      </div>
+    </div>
+    <div class="errmsg">!网络错误 <br />即将跳转到主页面</div>
+    <main></main>
+    <div class="zhuye">
+      <a href="index.html"><img src="img/indexbtn.png" width="100vw" /></a>
+    </div>
+    <div class="lishi">
+      <a href="imgrecord.html"><img src="img/recordbtn.png" width="100vw" /></a>
+    </div>
+    <div class="queren">
+      <img src="img/画笔.png" width="300vw" id="uploadButton" />
+    </div>
+    <div class="chongpai"><img src="img/返回.png" width="300vw" /></div>
+    <div class="getphoto">
+      <img src="img/take.png" width="200vw" id="captureButton" />
+    </div>
+
+    <div id="video-container">
+      <video id="video" playsinline autoplay></video>
+      <canvas
+        id="canvas"
+        width="1080"
+        height="1920"
+        style="display: none"
+      ></canvas>
+    </div>
+
+    <div id="decreaseSize">
+      <div class="jianxiao"><img src="img/-.png" width="70vw" /></div>
+    </div>
+    <div id="increaseSize">
+      <div class="fangda"><img src=" img/+.png" width="70vw" /></div>
+    </div>
+
+    <script>
+      // 获取所有的单选按钮
+      const radios = document.getElementsByName("sex");
+      let selectedValue = "male";
+      localStorage.setItem("sex", selectedValue);
+
+      // 为每个单选按钮添加事件监听器
+      for (let radio of radios) {
+        radio.addEventListener("change", function () {
+          // 当选中状态改变时，输出当前选中的值
+          selectedValue = this.value;
+          console.log("选中的性别是:", selectedValue);
+          localStorage.setItem("sex", selectedValue);
+        });
+      }
+      const increaseSizeButton = document.getElementById("increaseSize");
+      const decreaseSizeButton = document.getElementById("decreaseSize");
+
+      let dataUrl = "";
+
+      let scale = 1.8; // 初始缩放比例为180%
+
+      // 更新视频和画布的尺寸
+      function updateSize() {
+        // 限制尺寸在100%到300%之间
+        scale = Math.min(Math.max(scale, 1), 3);
+        video.style.transform = `scaleX(-1) scale(${scale})`;
+      }
+
+      // 初始更新一次尺寸
+      updateSize();
+
+      // 增加尺寸按钮点击事件
+      increaseSizeButton.addEventListener("click", function () {
+        scale *= 1.2; // 增加20%
+        updateSize();
+      });
+
+      // 减小尺寸按钮点击事件
+      decreaseSizeButton.addEventListener("click", function () {
+        scale *= 0.8; // 减少20%
+        updateSize();
+      });
+
+      // 获取摄像头
+      navigator.mediaDevices
+
+        .getUserMedia({
+          video: {
+            width: { ideal: 1080 },
+            height: { ideal: 1920 },
+          },
+        })
+        .then(function (stream) {
+          const video = document.getElementById("video");
+          video.srcObject = stream;
+        })
+        .catch(function (err) {
+          console.error("访问摄像头失败:", err);
+        });
+
+      document
+        .getElementById("captureButton")
+        .addEventListener("click", function () {
+          if (dataUrl === "") {
+            const video = document.getElementById("video");
+            const canvas = document.getElementById("canvas");
+            const context = canvas.getContext("2d");
+            const videoContainer = document.getElementById("video-container");
+
+            // 计算视频和画布中心点坐标
+            const videoCenterX = video.videoWidth / 2;
+            const videoCenterY = video.videoHeight / 2;
+            const canvasCenterX = canvas.width / 2;
+            const canvasCenterY = canvas.height / 2;
+
+            // 计算视频帧在画布上的位置
+            const videoFrameWidth = video.videoWidth * scale*1.4;
+            const videoFrameHeight = video.videoHeight * scale*1.4;
+            const videoFrameX = canvasCenterX - videoFrameWidth / 2;
+            const videoFrameY = canvasCenterY - videoFrameHeight / 2;
+            // 将视频帧绘制到Canvas上
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(
+              video,
+              videoFrameX,
+              videoFrameY,
+              videoFrameWidth,
+              videoFrameHeight
+            );
+
+            // 显示Canvas，隐藏视频
+            video.style.display = "none";
+            canvas.style.display = "block";
+            dataUrl = canvas.toDataURL();
+            const flippedCanvas = document.createElement("canvas");
+            flippedCanvas.width = canvas.width;
+            flippedCanvas.height = canvas.height;
+            const flippedContext = flippedCanvas.getContext("2d");
+            flippedContext.translate(flippedCanvas.width, 0);
+            flippedContext.scale(-1, 1);
+            flippedContext.drawImage(
+              canvas,
+              0,
+              0,
+              flippedCanvas.width,
+              flippedCanvas.height
+            );
+            document.querySelector(".chongpai").style.display = "block";
+            document.querySelector(".queren").style.display = "flex";
+            document.querySelector(".getphoto").style.display = "none";
+            localStorage.setItem("dataUrl", flippedCanvas.toDataURL());
+      //  saveAs(flippedCanvas.toDataURL(), "photo.jpg");
+
+          }
+        });
+
+      function saveAs(data, filename) {
+        const link = document.createElement("a");
+        link.href = data;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      document
+        .querySelector(".chongpai")
+        .addEventListener("click", function () {
+          location.reload();
+        });
+    </script>
+    <script></script>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
