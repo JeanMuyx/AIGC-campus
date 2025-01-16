@@ -4,4 +4,5 @@
 ## 说明
 该项目底层算法依托传媒人工智能开放创新服务平台算法基础算力。
 ## 运行截图
-![image](https://github.com/JeanMuyx/AIGC-campus/blob/main/image/%E9%A6%96%E9%A1%B5.jpg)
+![首页](./image/首页.png)
+
